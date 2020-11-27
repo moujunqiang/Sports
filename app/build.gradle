@@ -3,27 +3,20 @@ apply plugin: 'realm-android'
 
 android {
 
-    compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility rootProject.ext.android.java_version
+        targetCompatibility rootProject.ext.android.java_version
     }
-    signingConfigs {
-        uxin_sign {
-            storeFile file('..\\keystore\\sports.jks')
-            storePassword '123456'
-            keyAlias 'sport'
-            keyPassword '123456'
-        }
-    }
+
     defaultConfig {
-        applicationId "com.android.sports"
-        minSdkVersion 19
-        targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        applicationId rootProject.ext.android.applicationId
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         // dex突破65535的限制
@@ -36,24 +29,26 @@ android {
         }
 
     }
-
+    signingConfigs {
+        uxin_sign {
+            storeFile file('..\\keystore\\sports.jks')
+            storePassword '123456'
+            keyAlias 'sport'
+            keyPassword '123456'
+        }
+    }
     buildTypes {
         release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField "boolean", "DEBUG_MODE", "false"
+
             signingConfig signingConfigs.uxin_sign
 
         }
         debug {
-            minifyEnabled false
-//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField "boolean", "DEBUG_MODE", "true"
+
             signingConfig signingConfigs.uxin_sign
 
         }
     }
-
     dexOptions {
         javaMaxHeapSize "4g"
     }
@@ -67,48 +62,45 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "androidx.appcompat:appcompat:1.1.0"
-    implementation "androidx.annotation:annotation:1.1.0"
-    implementation "androidx.recyclerview:recyclerview:1.1.0-beta04"
-    implementation "androidx.cardview:cardview:1.0.0"
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
-    implementation "androidx.constraintlayout:constraintlayout:1.1.3"
-    implementation "com.google.android.material:material:1.1.0-alpha10"
-
-    testImplementation "junit:junit:4.12"
-    androidTestImplementation "androidx.test.ext:junit:1.1.1"
-    androidTestImplementation "androidx.test.espresso:espresso-core:3.2.0"
+    implementation rootProject.ext.support["appcompat"]
+    implementation rootProject.ext.support["design"]
+    implementation rootProject.ext.support["recyclerview"]
+    implementation rootProject.ext.support["cardview"]
+    implementation rootProject.ext.support["layout"]
+    testImplementation rootProject.ext.support["testImplementation"]
+    androidTestImplementation rootProject.ext.support["androidtestimplementation_ext"]
+    androidTestImplementation rootProject.ext.support["androidtestimplementation_espresso"]
 
     //日历控件
-    implementation "com.haibin:calendarview:3.5.4"
+    implementation rootProject.ext.dependencies["calendarview"]
 
     //butterknife
-    implementation "com.jakewharton:butterknife:10.1.0"
-    annotationProcessor "com.jakewharton:butterknife-compiler:10.1.0"
+    implementation rootProject.ext.dependencies["butterknife_api"]
+    annotationProcessor rootProject.ext.dependencies["annotationProcessor"]
 
     // RecycleVierw-Adapter
-    implementation "com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.47"
+    implementation rootProject.ext.dependencies["recyclevierw_adapter"]
 
     //自定义TabLayout
-    implementation "com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar"
+    implementation rootProject.ext.dependencies["flycotablayout_lib"]
 
     //沉浸式
-    implementation "com.gyf.immersionbar:immersionbar:3.0.0"
-    implementation "com.gyf.immersionbar:immersionbar-components:3.0.0"
+    implementation rootProject.ext.dependencies["immersionbar"]
+    implementation rootProject.ext.dependencies["immersionbar_components"]
 
     //gson
-    implementation "com.google.code.gson:gson:2.8.5"
+    implementation rootProject.ext.dependencies["gson"]
 
     //utilcode
-    implementation("com.blankj:utilcode:1.21.0") {
+    implementation(rootProject.ext.dependencies["utilcode"]) {
         exclude group: 'com.blankj', module: 'bus'
     }
 
     //3D地图
-    implementation  "com.amap.api:3dmap:latest.integration"
+    implementation rootProject.ext.dependencies["Map_3D"]
     //搜索功能
-    implementation "com.amap.api:search:latest.integration"
+    implementation rootProject.ext.dependencies["Map_search"]
     //定位SDK
-    implementation "com.amap.api:location:latest.integration"
+    implementation rootProject.ext.dependencies["Map_location"]
 
 }
